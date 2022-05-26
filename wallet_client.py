@@ -36,14 +36,14 @@ def run():
             full_command = input()
             tokens = full_command.split()
             command = tokens[0]
-            if command.casefold() == 'F'.casefold():
+            if command == 'F':
                 break
-            if command.casefold() == 'S'.casefold():
+            if command == 'S':
                 print(wallet_get_balance(stub, wallet_id))
-            if command.casefold() == 'O'.casefold():
+            if command == 'O':
                 value = float(tokens[1])
                 print(wallet_generate_payment_order(stub, wallet_id, value))
-            if command.casefold() == 'X'.casefold():
+            if command == 'X':
                 value = float(tokens[1])
                 op = bytes(eval(tokens[2]))
                 target = tokens[3]
