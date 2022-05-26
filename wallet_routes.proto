@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+service WalletRoutes{
+    rpc GetBalance(Wallet) returns (Balance) {}
+}
+
+message Balance {
+    required float total_balance = 1;
+}
+
+message Wallet {
+    required string id = 1;
+}
