@@ -14,6 +14,15 @@ def wallet_generate_payment_order(stub, wallet_id, value):
     ))
     return [payment_order.status, payment_order.secret]
 
+def wallet_generate_transfer(stub, value, op, target):
+    transfer = wallet_routes_pb2.Transfer(
+        target_wallet_id = target,
+        value = value,
+        secret = op
+    )
+    response = stub.GenerateTransfer(transfer)
+    return [response.status, response.balance]
+
 def run():
     wallet_id = 'douglas_adams'
     server_address = 'localhost:42000'
@@ -34,6 +43,11 @@ def run():
             if command.casefold() == 'O'.casefold():
                 value = float(tokens[1])
                 print(wallet_generate_payment_order(stub, wallet_id, value))
+            if command.casefold() == 'X'.casefold():
+                value = float(tokens[1])
+                op = bytes(eval(tokens[2]))
+                target = tokens[3]
+                print(wallet_generate_transfer(stub, value, op, target))
 
 
 if __name__ == '__main__':
