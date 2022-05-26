@@ -2,10 +2,18 @@ syntax = "proto2";
 
 service WalletRoutes{
     rpc GetBalance(Wallet) returns (Wallet) {}
-    // rpc GeneratePaymentOrder(PaymentOrder) returns (){}
+    rpc GeneratePaymentOrder(PaymentOrder) returns (PaymentOrder) {}
 }
 
 message Wallet {
     required string id = 1;
-    optional string total_balance = 2;
+    optional string balance = 2;
+}
+
+message PaymentOrder{
+    optional string id = 1;
+    optional int32 status = 2;
+    optional bytes secret = 3;
+    required string wallet_id = 4;
+    required float value = 5;
 }

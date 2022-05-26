@@ -5,7 +5,14 @@ import sys
 
 def wallet_get_balance(stub, wallet_id):
     wallet = stub.GetBalance(wallet_routes_pb2.Wallet(id=wallet_id))
-    return wallet.total_balance
+    return wallet.balance
+
+def wallet_generate_payment_order(stub, wallet_id, value):
+    payment_order = stub.GeneratePaymentOrder(wallet_routes_pb2.PaymentOrder(
+        wallet_id = wallet_id,
+        value = value
+    ))
+    return [payment_order.status, payment_order.secret]
 
 def run():
     wallet_id = 'douglas_adams'
@@ -17,11 +24,16 @@ def run():
     with grpc.insecure_channel(server_address) as channel:
         stub = wallet_routes_pb2_grpc.WalletRoutesStub(channel)
         while True:
-            command = input()
+            full_command = input()
+            tokens = full_command.split()
+            command = tokens[0]
             if command.casefold() == 'F'.casefold():
                 break
             if command.casefold() == 'S'.casefold():
                 print(wallet_get_balance(stub, wallet_id))
+            if command.casefold() == 'O'.casefold():
+                value = float(tokens[1])
+                print(wallet_generate_payment_order(stub, wallet_id, value))
 
 
 if __name__ == '__main__':
