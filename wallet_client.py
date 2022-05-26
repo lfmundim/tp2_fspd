@@ -8,8 +8,12 @@ def wallet_get_balance(stub, wallet_id):
     return balance.total_balance
 
 def run():
-    wallet_id = sys.argv[1] or 'douglas_adams'
-    server_address = sys.argv[2] or 'localhost:42000'
+    wallet_id = 'douglas_adams'
+    server_address = 'localhost:42000'
+    if len(sys.argv) > 1:
+        wallet_id = sys.argv[1]
+        server_address = sys.argv[2]
+
     with grpc.insecure_channel(server_address) as channel:
         stub = wallet_routes_pb2_grpc.WalletRoutesStub(channel)
         while True:

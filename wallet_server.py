@@ -13,8 +13,11 @@ class WalletRoutesServicer(wallet_routes_pb2_grpc.WalletRoutesServicer):
             return wallet_routes_pb2.Balance(total_balance=balance)
 
 def serve():
-    port = sys.argv[1] or 42000
-    wallet_file = sys.argv[2] or 'wallets.txt'
+    port = 42000
+    wallet_file = 'wallets.txt'
+    if len(sys.argv) > 1:
+        port = sys.argv[1]
+        wallet_file = sys.argv[2]
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     wallet_routes_pb2_grpc.add_WalletRoutesServicer_to_server(
         WalletRoutesServicer(), server
