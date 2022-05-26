@@ -1,5 +1,3 @@
-PROTOS = wallet_routes.proto
-
 clean:
 		rm *_pb2.py *_pb2_grpc.py
 

@@ -1,0 +1,19 @@
+syntax = "proto2";
+import "wallet_routes.proto";
+
+service StoreRoutes {
+    rpc GetPrice(Store) returns (Store) {}
+    rpc Sell(Order) returns (TransferResponse) {}
+    rpc CloseUp(Store) returns (Store) {}
+}
+
+message Store {
+    required string id = 1;
+    optional float price = 2;
+    optional float balance = 3;
+}
+
+message Order {
+    required bytes secret = 1;
+    required string store_id = 2;
+}
