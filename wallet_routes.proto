@@ -5,7 +5,7 @@ service WalletRoutes{
 }
 
 message Balance {
-    required float total_balance = 1;
+    required string total_balance = 1;
 }
 
 message Wallet {

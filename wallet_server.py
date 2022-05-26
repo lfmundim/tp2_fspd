@@ -6,11 +6,27 @@ import sys
 
 class WalletRoutesServicer(wallet_routes_pb2_grpc.WalletRoutesServicer):
     def GetBalance(self, request, context):
-        balance = 42-int(request.id)
-        if balance is None:
-            return wallet_routes_pb2.Balance(total_balance=0)
+        if request.id in self.db:
+            balance = self.db[request.id]
         else:
-            return wallet_routes_pb2.Balance(total_balance=balance)
+            balance = None
+        if balance is None:
+            return wallet_routes_pb2.Balance(total_balance='0')
+        else:
+            return wallet_routes_pb2.Balance(total_balance='{:.2f}'.format(balance))
+
+    def __init__(self, db):
+        self.db = db
+
+def fill_db(wallet_file):
+    file = open(wallet_file, 'r')
+    db = {}
+    for line in file:
+        tokens = line.split()
+        db[tokens[0]] = float(tokens[1])
+    file.close()
+    return db
+
 
 def serve():
     port = 42000
@@ -18,9 +34,12 @@ def serve():
     if len(sys.argv) > 1:
         port = sys.argv[1]
         wallet_file = sys.argv[2]
+
+    db = fill_db(wallet_file)
+
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     wallet_routes_pb2_grpc.add_WalletRoutesServicer_to_server(
-        WalletRoutesServicer(), server
+        WalletRoutesServicer(db), server
     )
     server.add_insecure_port(f'[::]:{port}')
     server.start()
