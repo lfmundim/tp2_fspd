@@ -1,13 +1,11 @@
 syntax = "proto2";
 
 service WalletRoutes{
-    rpc GetBalance(Wallet) returns (Balance) {}
-}
-
-message Balance {
-    required string total_balance = 1;
+    rpc GetBalance(Wallet) returns (Wallet) {}
+    // rpc GeneratePaymentOrder(PaymentOrder) returns (){}
 }
 
 message Wallet {
     required string id = 1;
+    optional string total_balance = 2;
 }

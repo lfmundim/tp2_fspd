@@ -11,9 +11,15 @@ class WalletRoutesServicer(wallet_routes_pb2_grpc.WalletRoutesServicer):
         else:
             balance = None
         if balance is None:
-            return wallet_routes_pb2.Balance(total_balance='0')
+            return wallet_routes_pb2.Wallet(
+                id=request.id,
+                total_balance='-1'
+            )
         else:
-            return wallet_routes_pb2.Balance(total_balance='{:.2f}'.format(balance))
+            return wallet_routes_pb2.Wallet(
+                id=request.id,
+                total_balance='{:.2f}'.format(balance)
+            )
 
     def __init__(self, db):
         self.db = db
