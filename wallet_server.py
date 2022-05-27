@@ -73,13 +73,18 @@ class WalletRoutesServicer(wallet_routes_pb2_grpc.WalletRoutesServicer):
         return response
 
     def CloseUp(self, request, context):
+        file = open(self.wallet_file, 'w')
+        for k,v in self.wallet_db.items():
+            file.write('%s %s\n' % (k, v))
+        file.close()
         self._stop_event.set()
         return request
 
-    def __init__(self, wallet_db, stop_event):
+    def __init__(self, wallet_db, wallet_file, stop_event):
         self.wallet_db = wallet_db
         self.secret_db = {}
         self._stop_event = stop_event
+        self.wallet_file = wallet_file
 
 
 def fill_db(wallet_file):
@@ -106,7 +111,7 @@ def serve():
     stop_event = threading.Event()
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     wallet_routes_pb2_grpc.add_WalletRoutesServicer_to_server(
-        WalletRoutesServicer(wallet_db, stop_event), server
+        WalletRoutesServicer(wallet_db, wallet_file, stop_event), server
     )
     server.add_insecure_port(f'[::]:{port}')
     server.start()
