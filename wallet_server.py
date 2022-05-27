@@ -1,5 +1,6 @@
 from concurrent import futures
 from secrets import token_bytes
+import threading
 import wallet_routes_pb2_grpc
 import wallet_routes_pb2
 import grpc
@@ -71,11 +72,15 @@ class WalletRoutesServicer(wallet_routes_pb2_grpc.WalletRoutesServicer):
 
         return response
 
+    def CloseUp(self, request, context):
+        self._stop_event.set()
+        return request
 
-
-    def __init__(self, wallet_db):
+    def __init__(self, wallet_db, stop_event):
         self.wallet_db = wallet_db
         self.secret_db = {}
+        self._stop_event = stop_event
+
 
 def fill_db(wallet_file):
     file = open(wallet_file, 'r')
@@ -98,13 +103,15 @@ def serve():
 
     wallet_db = fill_db(wallet_file)
 
+    stop_event = threading.Event()
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     wallet_routes_pb2_grpc.add_WalletRoutesServicer_to_server(
-        WalletRoutesServicer(wallet_db), server
+        WalletRoutesServicer(wallet_db, stop_event), server
     )
     server.add_insecure_port(f'[::]:{port}')
     server.start()
-    server.wait_for_termination()
+    stop_event.wait()
+    server.stop(100)
 
 if __name__ == '__main__':
     serve()

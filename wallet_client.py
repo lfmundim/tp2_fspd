@@ -23,6 +23,10 @@ def wallet_generate_transfer(stub, value, op, target):
     response = stub.GenerateTransfer(transfer)
     return [response.status, response.balance]
 
+def wallet_close_up(stub):
+    wallet = wallet_routes_pb2.Wallet(id="dummy")
+    stub.CloseUp(wallet)
+
 def run():
     wallet_id = 'store'
     server_address = 'localhost:42000'
@@ -37,6 +41,7 @@ def run():
             tokens = full_command.split()
             command = tokens[0]
             if command == 'F':
+                wallet_close_up(stub)
                 break
             if command == 'S':
                 print(wallet_get_balance(stub, wallet_id))

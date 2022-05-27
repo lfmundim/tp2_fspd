@@ -4,6 +4,7 @@ service WalletRoutes{
     rpc GetBalance(Wallet) returns (Wallet) {}
     rpc GeneratePaymentOrder(PaymentOrder) returns (PaymentOrderResponse) {}
     rpc GenerateTransfer(Transfer) returns (TransferResponse) {}
+    rpc CloseUp(Wallet) returns (Wallet) {}
 }
 
 message Wallet {
