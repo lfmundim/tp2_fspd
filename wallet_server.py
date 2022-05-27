@@ -22,7 +22,7 @@ class WalletRoutesServicer(wallet_routes_pb2_grpc.WalletRoutesServicer):
         else:
             return wallet_routes_pb2.Wallet(
                 id=request.id,
-                balance='{:.2f}'.format(balance)
+                balance=balance
             )
 
     def GeneratePaymentOrder(self, request, context):
@@ -67,7 +67,7 @@ class WalletRoutesServicer(wallet_routes_pb2_grpc.WalletRoutesServicer):
             wallet_balance = wallet_balance + request.value
             self.wallet_db[request.target_wallet_id] = wallet_balance
             response.status = 0
-            response.balance = '{:.2f}'.format(wallet_balance)
+            response.balance = wallet_balance
 
         return response
 
@@ -84,7 +84,7 @@ def fill_db(wallet_file):
         tokens = line.split()
         if(tokens[0]=='EOF'):
             break
-        db[tokens[0]] = float(tokens[1])
+        db[tokens[0]] = int(tokens[1])
     file.close()
     return db
 

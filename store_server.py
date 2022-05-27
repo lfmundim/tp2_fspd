@@ -28,7 +28,7 @@ class StoreRoutesServicer(store_routes_pb2_grpc.StoreRoutesServicer):
             ))
             response.status = transfer_response.status
             if transfer_response.status == 0:
-                self.store.balance = float(transfer_response.balance)
+                self.store.balance = int(transfer_response.balance)
         return response
 
     def CloseUp(self, request, context):
@@ -39,7 +39,7 @@ class StoreRoutesServicer(store_routes_pb2_grpc.StoreRoutesServicer):
         self.store = store_routes_pb2.Store(
             price = price,
             id = store_id,
-            balance = float(balance)
+            balance = int(balance)
         )
         self.wallet_stub = wallet_stub
         self._stop_event = stop_event
@@ -51,7 +51,7 @@ def serve():
     wallet_id = 'store'
     wallet_server_address = '127.0.0.1:42000'
     if(len(sys.argv) > 1):
-        price = sys.argv[1]
+        price = int(sys.argv[1])
         port = sys.argv[2]
         wallet_id = sys.argv[3]
         wallet_server_address = sys.argv[4]

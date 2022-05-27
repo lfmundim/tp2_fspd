@@ -9,8 +9,8 @@ service StoreRoutes {
 
 message Store {
     required string id = 1;
-    optional float price = 2;
-    optional float balance = 3;
+    optional int32 price = 2;
+    optional int32 balance = 3;
 }
 
 message Order {

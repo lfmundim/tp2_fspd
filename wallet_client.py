@@ -41,10 +41,10 @@ def run():
             if command == 'S':
                 print(wallet_get_balance(stub, wallet_id))
             if command == 'O':
-                value = float(tokens[1])
+                value = int(tokens[1])
                 print(wallet_generate_payment_order(stub, wallet_id, value))
             if command == 'X':
-                value = float(tokens[1])
+                value = int(tokens[1])
                 op = bytes(eval(tokens[2]))
                 target = tokens[3]
                 print(wallet_generate_transfer(stub, value, op, target))
