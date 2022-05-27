@@ -30,4 +30,5 @@ message Transfer {
 message TransferResponse {
     required int32 status = 1;
     optional string balance = 2;
+    optional int32 order_status = 3;
 }

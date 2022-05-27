@@ -14,6 +14,5 @@ message Store {
 }
 
 message Order {
-    required bytes secret = 1;
-    required string store_id = 2;
+    required string paying_wallet_id = 2;
 }

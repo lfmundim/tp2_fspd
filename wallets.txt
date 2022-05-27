@@ -1,3 +1,4 @@
 douglas_adams 42000.42
 linus_sebastian 600000
 tim_cook 1000000000
+store 1000

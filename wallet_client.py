@@ -24,7 +24,7 @@ def wallet_generate_transfer(stub, value, op, target):
     return [response.status, response.balance]
 
 def run():
-    wallet_id = 'douglas_adams'
+    wallet_id = 'store'
     server_address = 'localhost:42000'
     if len(sys.argv) > 1:
         wallet_id = sys.argv[1]

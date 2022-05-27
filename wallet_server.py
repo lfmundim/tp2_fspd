@@ -60,7 +60,6 @@ class WalletRoutesServicer(wallet_routes_pb2_grpc.WalletRoutesServicer):
             return response
         else:
             ordered_value = self.secret_db[request.secret]
-            print(type(ordered_value))
         if ordered_value != request.value:
             response.status = -9
         else:
