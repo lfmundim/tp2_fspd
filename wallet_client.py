@@ -34,6 +34,9 @@ def run():
         wallet_id = sys.argv[1]
         server_address = sys.argv[2]
 
+    secrets = {}
+    op_index = 1
+
     with grpc.insecure_channel(server_address) as channel:
         stub = wallet_routes_pb2_grpc.WalletRoutesStub(channel)
         while True:
@@ -47,12 +50,23 @@ def run():
                 print(wallet_get_balance(stub, wallet_id))
             if command == 'O':
                 value = int(tokens[1])
-                print(wallet_generate_payment_order(stub, wallet_id, value))
+                response = wallet_generate_payment_order(stub, wallet_id, value)
+                secrets[op_index] = response[1]
+                print(op_index)
+                op_index = op_index+1
             if command == 'X':
                 value = int(tokens[1])
-                op = bytes(eval(tokens[2]))
+                op = int(tokens[2])
                 target = tokens[3]
-                print(wallet_generate_transfer(stub, value, op, target))
+                if op not in secrets.keys():
+                    print(-2)
+                else:
+                    response = wallet_generate_transfer(stub, value, secrets[op], target)
+                    if response[0] == 0:
+                        secrets.pop(op)
+                        print(response[1])
+                    else:
+                        print(response[0])
 
 
 if __name__ == '__main__':

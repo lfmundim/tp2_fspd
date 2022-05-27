@@ -62,7 +62,7 @@ class WalletRoutesServicer(wallet_routes_pb2_grpc.WalletRoutesServicer):
         else:
             ordered_value = self.secret_db[request.secret]
         if ordered_value != request.value:
-            response.status = -9
+            response.status = -3
         else:
             wallet_balance = self.wallet_db[request.target_wallet_id]
             wallet_balance = wallet_balance + request.value
