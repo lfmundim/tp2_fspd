@@ -27,7 +27,8 @@ class StoreRoutesServicer(store_routes_pb2_grpc.StoreRoutesServicer):
                 target_wallet_id = self.store.id
             ))
             response.status = transfer_response.status
-            self.store.balance = float(transfer_response.balance)
+            if transfer_response.status == 0:
+                self.store.balance = float(transfer_response.balance)
         return response
 
     def CloseUp(self, request, context):

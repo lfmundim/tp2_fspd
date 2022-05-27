@@ -82,6 +82,8 @@ def fill_db(wallet_file):
     db = {}
     for line in file:
         tokens = line.split()
+        if(tokens[0]=='EOF'):
+            break
         db[tokens[0]] = float(tokens[1])
     file.close()
     return db
