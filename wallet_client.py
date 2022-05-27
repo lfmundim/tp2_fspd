@@ -60,7 +60,7 @@ def run():
                     op = int(tokens[2])
                     target = tokens[3]
                     if op not in secrets.keys():
-                        print(-2)
+                        print(-9)
                     else:
                         response = wallet_generate_transfer(stub, value, secrets[op], target)
                         if response[0] == 0:
