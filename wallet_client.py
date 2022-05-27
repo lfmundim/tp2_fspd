@@ -40,33 +40,36 @@ def run():
     with grpc.insecure_channel(server_address) as channel:
         stub = wallet_routes_pb2_grpc.WalletRoutesStub(channel)
         while True:
-            full_command = input()
-            tokens = full_command.split()
-            command = tokens[0]
-            if command == 'F':
-                wallet_close_up(stub)
-                break
-            if command == 'S':
-                print(wallet_get_balance(stub, wallet_id))
-            if command == 'O':
-                value = int(tokens[1])
-                response = wallet_generate_payment_order(stub, wallet_id, value)
-                secrets[op_index] = response[1]
-                print(op_index)
-                op_index = op_index+1
-            if command == 'X':
-                value = int(tokens[1])
-                op = int(tokens[2])
-                target = tokens[3]
-                if op not in secrets.keys():
-                    print(-2)
-                else:
-                    response = wallet_generate_transfer(stub, value, secrets[op], target)
-                    if response[0] == 0:
-                        secrets.pop(op)
-                        print(response[1])
+            try:
+                full_command = input()
+                tokens = full_command.split()
+                command = tokens[0]
+                if command == 'F':
+                    wallet_close_up(stub)
+                    break
+                if command == 'S':
+                    print(wallet_get_balance(stub, wallet_id))
+                if command == 'O':
+                    value = int(tokens[1])
+                    response = wallet_generate_payment_order(stub, wallet_id, value)
+                    secrets[op_index] = response[1]
+                    print(op_index)
+                    op_index = op_index+1
+                if command == 'X':
+                    value = int(tokens[1])
+                    op = int(tokens[2])
+                    target = tokens[3]
+                    if op not in secrets.keys():
+                        print(-2)
                     else:
-                        print(response[0])
+                        response = wallet_generate_transfer(stub, value, secrets[op], target)
+                        if response[0] == 0:
+                            secrets.pop(op)
+                            print(response[1])
+                        else:
+                            print(response[0])
+            except EOFError:
+                break
 
 
 if __name__ == '__main__':

@@ -28,17 +28,20 @@ def run():
     with grpc.insecure_channel(server_address) as channel:
         stub = store_routes_pb2_grpc.StoreRoutesStub(channel)
         while True:
-            command = input()
-            if command == 'F':
-                print(store_close_up(stub))
+            try:
+                command = input()
+                if command == 'F':
+                    print(store_close_up(stub))
+                    break
+                if command == 'P':
+                    print(store_get_price(stub))
+                if command == 'C':
+                    response = store_make_purchase(stub, wallet_id)
+                    print(response.order_status)
+                    if response.order_status == 0:
+                        print(response.status)
+            except EOFError:
                 break
-            if command == 'P':
-                print(store_get_price(stub))
-            if command == 'C':
-                response = store_make_purchase(stub, wallet_id)
-                print(response.order_status)
-                if response.order_status == 0:
-                    print(response.status)
 
 
 if __name__ == '__main__':

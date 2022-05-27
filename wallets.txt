@@ -1,4 +1,4 @@
 douglas_adams 42000
 linus_sebastian 600000
-tim_cook 1000000100
-store 900
+tim_cook 1000000120
+store 880
