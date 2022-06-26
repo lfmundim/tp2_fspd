@@ -47,10 +47,6 @@ A última função desse servidor é finalizar a transferência de dinheiro. Par
 ## 2.2. `wallet_client.py`
 O cliente do servidor de carteiras tem uma implementação muito simples onde sua maior responsabilidade é definir o comando e os parâmetros a serem enviados ao servidor e a impressão da resposta de interesse recebida, então não será muito aprofundada a sua explicação, somente alguns pontos chave.
 
-### 2.2.1. Recepcão de `bytes` como parâmetro
-Para receber parâmetros no formato `b'\x82\xc0\x028\x11\x92\xc1\x9d\'\x9cL*\x8e\xca\x95?\x82"\xf8P\x83hR\x03\xb4\xde\x80i\xf6\x1a\x19i'` recuperado do retorno de `GeneratePaymentOrder` e utilizado como parâmetro de `GenerateTransfer` foi necessário o emprego de alguma solução alternativa. Devido ao escopo simples e de demonstração desse trabalho foi utilizada a função `eval()` do `python` junto da conversão para `bytes` para obtermos o array de bytes sem problemas. Essa solução só deve ser aplicada nesse escopo visto os grandes perigos do uso de `eval()` em sistemas de produção, já que resultaria na execução de um possível comando enviado.
-![](carbon/untitled%3AUntitled-1-2022-05-27-14-43-54.png)
-
 ## 2.3. `store_server.py`
 O servidor da loja precisa de alguns detalhes a mais que o servidor de carteiras. Especificamente, esse programa faz o papel de _servidor_ para a loja mas também o papel de _cliente_ para a carteira. Portanto, na inicialização do server, é passado um `stub` da carteira para o servidor da loja. Isso se dá pelo fato de que algumas operações da loja dependem da carteira (ex: recuperar saldo, efetuar venda).
 
@@ -68,4 +64,4 @@ Essa última função realiza o papel de encerrar o servidor. Na inicialização
 # 3. Conclusão
 O trabalho prático 2 foi muito mais simples e de fácil execução que o trabalho prático 1, que exigia manipulação de primitivas de sincronização, um feito muito mais complexo que a comunicação entre servidor e cliente em RPC.
 
-Os principais desafios encontrados foram a definição dos endpoints e objetos a serem trafegados, a recepção de `bytes` como input do usuário e o começo da implementação do servidor e cliente. Felizmente [a documentação da API de gRPC em Python](http://grpc.io) é bem redigida e com exemplos razoáveis de forma que esse último ponto foi apenas um "ramp up" inicial, que se tornou muito mais simples de repetir em seguida. A [documentação de `protobuf`](https://developers.google.com/protocol-buffers/docs/proto#scalar) para definir os tipos a serem utilizados também foi de fácil compreensão.
+Os principais desafios encontrados foram a definição dos endpoints e objetos a serem trafegados e o começo da implementação do servidor e cliente. Felizmente [a documentação da API de gRPC em Python](http://grpc.io) é bem redigida e com exemplos razoáveis de forma que esse último ponto foi apenas um "ramp up" inicial, que se tornou muito mais simples de repetir em seguida. A [documentação de `protobuf`](https://developers.google.com/protocol-buffers/docs/proto#scalar) para definir os tipos a serem utilizados também foi de fácil compreensão.
