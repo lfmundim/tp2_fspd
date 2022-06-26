@@ -32,6 +32,8 @@ class StoreRoutesServicer(store_routes_pb2_grpc.StoreRoutesServicer):
         return response
 
     def CloseUp(self, request, context):
+        wallet = wallet_routes_pb2.Wallet(id="dummy")
+        self.wallet_stub.CloseUp(wallet)
         self._stop_event.set()
         return self.store
 

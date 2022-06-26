@@ -30,7 +30,7 @@ def run():
         while True:
             try:
                 command = input()
-                if command == 'F':
+                if command == 'T':
                     print(store_close_up(stub))
                     break
                 if command == 'P':

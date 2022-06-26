@@ -1,4 +1,6 @@
-douglas_adams 42000
+douglas_adams 42080
 linus_sebastian 600000
-tim_cook 1000000120
-store 880
+tim_cook 1000000200
+store 720
+carteira_cliente 1925
+carteira_loja 70
